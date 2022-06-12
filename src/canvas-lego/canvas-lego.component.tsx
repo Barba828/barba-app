@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { fillLegoRectFactory, toMosaic } from "./utils";
-import { useUploader } from "../hooks/use-uploader";
+import { useUploader, useDebounce } from "../hooks";
 import "./canvas-lego.component.css";
 import {
   Button,
@@ -15,34 +15,49 @@ import {
 } from "@mui/material";
 import { fileSave } from "browser-fs-access";
 
+const defautWidth =
+  window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);
+
 export const CanvasToLego: FC = () => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   const [size, setSize] = React.useState<number>(20);
-  const [width, setWidth] = React.useState<number>(800);
+  const [width, setWidth] = React.useState<number>(defautWidth);
   const [radiu, setRadiu] = React.useState<number>(3);
 
   const [type, setType] = React.useState<MosaicType>("lego");
   const [shadow, setShadow] = React.useState<ShadowType>("front");
 
-  const { src: imgSrc, blob, onOpenFile } = useUploader({});
+  const { src: imgSrc, blob, onOpenFile } = useUploader();
+
+  const debounceToMosaic = useDebounce(
+    () => {
+      if (!canvasRef.current) {
+        return;
+      }
+
+      const fillMosaicRect = fillLegoRectFactory({
+        type,
+        shadow,
+        r: radiu,
+      });
+
+      toMosaic(canvasRef.current, {
+        imgSrc,
+        fillMosaicRect,
+        size,
+      });
+    },
+    300,
+    [imgSrc, size, width, type, shadow, radiu]
+  );
+
   useEffect(() => {
     if (!canvasRef.current) {
       return;
     }
-
-    const fillMosaicRect = fillLegoRectFactory({
-      type,
-      shadow,
-      r: radiu,
-    });
-
-    toMosaic(canvasRef.current, {
-      imgSrc,
-      fillMosaicRect,
-      size,
-    });
-  }, [canvasRef, imgSrc, size, width, type, shadow, radiu]);
+    debounceToMosaic();
+  }, [canvasRef, debounceToMosaic]);
 
   const handleChangeSize = (_e: Event, value: number | number[]) => {
     setSize(value as number);
@@ -149,7 +164,9 @@ export const CanvasToLego: FC = () => {
             onChange={handleChangeRadiu}
           />
         </Card>
-        {imgSrc && <img src={imgSrc} alt="pic" height={220} />}
+        {imgSrc && (
+          <img src={imgSrc} className="lego-preview" alt="pic" height={220} />
+        )}
       </div>
       <div className="canvas-mosaic">
         <canvas
