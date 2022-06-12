@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.c05a62ab.css",
-    "main.js": "/static/js/main.6fce4449.js",
-    "static/js/787.50a8d36b.chunk.js": "/static/js/787.50a8d36b.chunk.js",
-    "index.html": "/index.html",
-    "main.c05a62ab.css.map": "/static/css/main.c05a62ab.css.map",
-    "main.6fce4449.js.map": "/static/js/main.6fce4449.js.map",
-    "787.50a8d36b.chunk.js.map": "/static/js/787.50a8d36b.chunk.js.map"
+    "main.css": "/barba-app/static/css/main.c05a62ab.css",
+    "main.js": "/barba-app/static/js/main.465885fa.js",
+    "static/js/787.50a8d36b.chunk.js": "/barba-app/static/js/787.50a8d36b.chunk.js",
+    "index.html": "/barba-app/index.html",
+    "main.c05a62ab.css.map": "/barba-app/static/css/main.c05a62ab.css.map",
+    "main.465885fa.js.map": "/barba-app/static/js/main.465885fa.js.map",
+    "787.50a8d36b.chunk.js.map": "/barba-app/static/js/787.50a8d36b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c05a62ab.css",
-    "static/js/main.6fce4449.js"
+    "static/js/main.465885fa.js"
   ]
 }
