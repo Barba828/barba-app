@@ -158,7 +158,7 @@ const standardButton: FillMosaicRect = (ctx, rgba, x, y, w, h, r = 3) => {
   ctx.shadowColor = "";
 
   const circleBack = new Path2D();
-  circleBack.arc(x + w / 2, y + h / 2, (w / r!) * 0.8, 0, 2 * Math.PI);
+  circleBack.arc(x + w / 2, y + h / 2, (w / r) * 0.8, 0, 2 * Math.PI);
   ctx.fill(circleBack);
 };
 
@@ -179,7 +179,7 @@ const sphericalButton: FillMosaicRect = (ctx, rgba, x, y, w, h, r = 3) => {
   ctx.fillStyle = radgrad;
 
   const circle = new Path2D();
-  circle.arc(x + w / 2, y + h / 2, w / 3, 0, 2 * Math.PI);
+  circle.arc(x + w / 2, y + h / 2, w / r, 0, 2 * Math.PI);
   ctx.fill(circle);
 };
 
