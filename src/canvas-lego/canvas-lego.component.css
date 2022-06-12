@@ -1,0 +1,40 @@
+.lego-container {
+    background-color: rgb(231 235 240);
+    padding: 20px;
+}
+.lego-input {
+    display: flex;
+    margin-bottom: 20px;
+}
+.lego-setting {
+    padding: 20px;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.controller {
+    display: flex;
+    width: 100%;
+    margin-bottom: 16px !important;
+}
+
+.controller .button {
+    flex: 1;
+}
+
+.controller :first-child {
+    margin-right: 10px;
+}
+
+.canvas-mosaic{
+    overflow: scroll;
+    text-align: start;
+}
+
+/* .card {
+    border-radius: 20px;
+    background-color: #f5f5f5;
+    padding: 20px;
+    box-shadow: 0px 0px 20px #aaaaaaaa;
+} */
