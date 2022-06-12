@@ -83,7 +83,6 @@ export const useFileUploader = (
         const localUrl = URL.createObjectURL(blob); // 转成 Blod url地址
         setSrc(localUrl);
         setBlob(blob);
-        console.log("lnz localUrl", localUrl);
       }
     } catch (_e) {}
   }, [options]);
