@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/barba-app/static/css/main.c05a62ab.css",
-    "main.js": "/barba-app/static/js/main.465885fa.js",
+    "main.js": "/barba-app/static/js/main.e68fa3fc.js",
     "static/js/787.50a8d36b.chunk.js": "/barba-app/static/js/787.50a8d36b.chunk.js",
     "index.html": "/barba-app/index.html",
     "main.c05a62ab.css.map": "/barba-app/static/css/main.c05a62ab.css.map",
-    "main.465885fa.js.map": "/barba-app/static/js/main.465885fa.js.map",
+    "main.e68fa3fc.js.map": "/barba-app/static/js/main.e68fa3fc.js.map",
     "787.50a8d36b.chunk.js.map": "/barba-app/static/js/787.50a8d36b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c05a62ab.css",
-    "static/js/main.465885fa.js"
+    "static/js/main.e68fa3fc.js"
   ]
 }
