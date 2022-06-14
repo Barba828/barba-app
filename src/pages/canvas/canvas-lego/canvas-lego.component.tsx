@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { fillLegoRectFactory, toMosaic } from "./utils";
-import { useUploader, useDebounce } from "../hooks";
+import { useUploader, useDebounce } from "@/hooks";
 import "./canvas-lego.component.css";
 import {
   Button,
