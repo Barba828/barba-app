@@ -3,13 +3,18 @@
 }
 .lego-input {
     display: flex;
+    flex-wrap: wrap;
 }
 .lego-setting {
+    min-width: 280px !important;
     padding: 20px;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-bottom: 20px;
+}
+.lego-preview{
     margin-bottom: 20px;
 }
 
@@ -30,14 +35,12 @@
     text-align: start;
 }
 
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
     .lego-input {
         flex-direction: column;
     }
-    .lego-preview{
-        margin-bottom: 20px;
-    }
-  }
+
+  } */
 
 /* .card {
     border-radius: 20px;
