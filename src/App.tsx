@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import "./App.css";
+import { BrowserRouter } from "react-router-dom";
 import { RouterSide } from "./routes/router-side";
 import { RouterView } from "./routes/router-view";
+
+import "./App.css";
 
 export function toGithub() {
   window.location.href = "https://github.com/Barba828/fun-canvas";
@@ -24,11 +26,11 @@ const App = () => {
     setChecked(!checked);
   };
   return (
-    <>
+    <BrowserRouter>
       <HeaderBar onMenuVisible={handleVisible} />
       <SideBar onMenuVisible={handleVisible} visible={checked} />
       <RouterView />
-    </>
+    </BrowserRouter>
   );
 };
 

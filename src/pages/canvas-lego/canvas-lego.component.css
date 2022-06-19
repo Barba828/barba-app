@@ -26,12 +26,11 @@
 .controller .button {
     flex: 1;
 }
-.controller :first-child {
+/* .controller :first-child {
     margin-right: 10px;
-}
+} */
 
 .canvas-mosaic{
-    /* overflow: scroll; */
     text-align: start;
 }
 

@@ -15,7 +15,7 @@ const uploaderOptions: UploaderOptions = {
 
 /**
  * 基于 input[type=file] 实现上传组件
- * @param options
+ * @param options 上传组件的配置 {accept: "image/*"}
  * @returns
  */
 export const useUploader = (options: UploaderOptions = uploaderOptions) => {
@@ -46,13 +46,49 @@ export const useUploader = (options: UploaderOptions = uploaderOptions) => {
     };
   });
 
-  const onOpenFile = useCallback(async () => {
+  const openFile = useCallback(async () => {
     try {
       input.current?.click();
     } catch (_e) {}
   }, []);
 
-  return { blob, src, onOpenFile };
+  return { blob, src, openFile };
+};
+
+/**
+ * 文件下载
+ * @param canvas
+ * @param blob 下载blob对象
+ * @param extensions 保存文件类型
+ * @returns
+ */
+export const useDownloader = (
+  canvas?: HTMLCanvasElement | null,
+  blob?: FileWithHandle,
+  extensions: string[] = [".png"]
+) => {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    setName(`barba_${blob?.name}`);
+  }, [blob]);
+
+  const downloadFile = async () => {
+    if (!canvas) {
+      return;
+    }
+    canvas.toBlob(async (canvasBlob) => {
+      if (!canvasBlob) {
+        return;
+      }
+
+      await fileSave(canvasBlob, {
+        fileName: name,
+        extensions: extensions,
+      });
+    });
+  };
+  return { name, downloadFile };
 };
 
 type FileUploaderOptions = GetType<typeof fileOpen>;
@@ -72,7 +108,7 @@ export const useFileUploader = (
   const [blob, setBlob] = useState<FileWithHandle>();
   const [src, setSrc] = useState<string>("");
 
-  const onOpenFile = useCallback(async () => {
+  const openFile = useCallback(async () => {
     try {
       const blob = (await fileOpen({
         ...options,
@@ -97,5 +133,5 @@ export const useFileUploader = (
     });
   }, [blob]);
 
-  return { blob, src, onOpenFile, onSaveFile };
+  return { blob, src, openFile, onSaveFile };
 };

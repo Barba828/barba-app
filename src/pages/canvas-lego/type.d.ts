@@ -1,5 +1,6 @@
 type RGBA = [number, number, number, number];
 type MosaicType = "lego" | "spherical" | "flat";
+type ColorType = "random" | "avg";
 type ShadowType = "front" | "side" | "none";
 type FillMosaicRectOptions = {
   shadow?: ShadowType;

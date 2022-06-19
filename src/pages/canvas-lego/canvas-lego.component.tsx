@@ -1,6 +1,6 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState, useRef } from "react";
 import { fillLegoRectFactory, toMosaic } from "./utils";
-import { useUploader, useDebounce } from "@/hooks";
+import { useUploader, useDebounce, useDownloader } from "@/hooks";
 import "./canvas-lego.component.css";
 import {
   Button,
@@ -13,22 +13,23 @@ import {
   Card,
   Typography,
 } from "@mui/material";
-import { fileSave } from "browser-fs-access";
 
 const defautWidth =
   window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);
 
 export const CanvasToLego: FC = () => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [size, setSize] = React.useState<number>(20);
-  const [width, setWidth] = React.useState<number>(defautWidth);
-  const [radiu, setRadiu] = React.useState<number>(3);
+  const [size, setSize] = useState<number>(20);
+  const [width, setWidth] = useState<number>(defautWidth);
+  const [radiu, setRadiu] = useState<number>(3);
 
-  const [type, setType] = React.useState<MosaicType>("lego");
-  const [shadow, setShadow] = React.useState<ShadowType>("front");
+  const [type, setType] = useState<MosaicType>("lego");
+  const [shadow, setShadow] = useState<ShadowType>("front");
+  const [colorType, setColorType] = useState<ColorType>("random");
 
-  const { src: imgSrc, blob, onOpenFile } = useUploader();
+  const { src: imgSrc, blob, openFile } = useUploader();
+  const { downloadFile } = useDownloader(canvasRef.current, blob);
 
   const debounceToMosaic = useDebounce(
     () => {
@@ -46,10 +47,11 @@ export const CanvasToLego: FC = () => {
         imgSrc,
         fillMosaicRect,
         size,
+        colorType,
       });
     },
     300,
-    [imgSrc, size, width, type, shadow, radiu]
+    [imgSrc, size, width, type, shadow, radiu, colorType]
   );
 
   useEffect(() => {
@@ -79,20 +81,8 @@ export const CanvasToLego: FC = () => {
     setShadow(target.value as ShadowType);
   };
 
-  const handleDownload = async () => {
-    if (!canvasRef.current) {
-      return;
-    }
-    canvasRef.current.toBlob(async (canvasBlob) => {
-      if (!canvasBlob) {
-        return;
-      }
-
-      await fileSave(canvasBlob, {
-        fileName: `barba_${blob?.name}`,
-        extensions: [".png"],
-      });
-    });
+  const handleChangeColorType = ({ target }: SelectChangeEvent) => {
+    setColorType(target.value as ColorType);
   };
 
   return (
@@ -100,13 +90,13 @@ export const CanvasToLego: FC = () => {
       <div className="lego-input">
         <Card sx={{ minWidth: 200 }} className="lego-setting">
           <div className="controller">
-            <Button className="button" variant="outlined" onClick={onOpenFile}>
+            <Button className="button" variant="outlined" onClick={openFile}>
               选择
             </Button>
             <Button
               disabled={!imgSrc || !canvasRef.current}
               className="button"
-              onClick={handleDownload}
+              onClick={downloadFile}
             >
               保存
             </Button>
@@ -125,7 +115,7 @@ export const CanvasToLego: FC = () => {
             </Select>
           </FormControl>
 
-          <FormControl fullWidth>
+          <FormControl className="controller" fullWidth>
             <InputLabel id="mosaic-shadow">颗粒阴影</InputLabel>
             <Select
               labelId="mosaic-shadow"
@@ -136,6 +126,19 @@ export const CanvasToLego: FC = () => {
               <MenuItem value={"none"}>无</MenuItem>
               <MenuItem value={"front"}>正角</MenuItem>
               <MenuItem value={"side"}>偏角</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel id="mosaic-color-type">色彩范围</InputLabel>
+            <Select
+              labelId="mosaic-color-type"
+              value={colorType}
+              label="色彩范围"
+              onChange={handleChangeColorType}
+            >
+              <MenuItem value={"random"}>随机</MenuItem>
+              <MenuItem value={"avg"}>平均值</MenuItem>
             </Select>
           </FormControl>
         </Card>
@@ -169,12 +172,7 @@ export const CanvasToLego: FC = () => {
         )}
       </div>
       <div className="canvas-mosaic">
-        <canvas
-          ref={canvasRef}
-          id="mosaic"
-          width={width}
-          height={width}
-        ></canvas>
+        <canvas ref={canvasRef} id="mosaic" width={width}></canvas>
       </div>
     </div>
   );

@@ -19,13 +19,17 @@ export const toMosaic = (
      * 马赛克大小
      */
     size?: number;
+    /**
+     * 马赛克块颜色计算方式 随机｜平均
+     */
+    colorType?: ColorType;
   }
 ) => {
   const ctx = canvas.getContext("2d");
   if (!ctx) {
     return;
   }
-  const { imgSrc, fillMosaicRect, size = 10 } = options;
+  const { imgSrc, fillMosaicRect, size = 10, colorType = "random" } = options;
   const image = new Image();
 
   image.src = imgSrc;
@@ -45,12 +49,30 @@ export const toMosaic = (
     // 生成 i * j 的马赛克块
     for (let i = 0; i < Math.floor(canvas.width / size); i++) {
       for (let j = 0; j < Math.floor(canvas.height / size); j++) {
-        // 从马赛克块中随机抽出一个像素点信息
-        let rgba = getPxInfo(
-          imageData,
-          i * size + Math.floor(Math.random() * size),
-          j * size + Math.floor(Math.random() * size)
-        );
+        let rgba: RGBA = [0, 0, 0, 0];
+        if (colorType === "random") {
+          //从马赛克块中随机抽出一个像素点信息
+          rgba = getPxInfo(
+            imageData,
+            i * size + Math.floor(Math.random() * size),
+            j * size + Math.floor(Math.random() * size)
+          );
+        } else if (colorType === "avg") {
+          for (let x = 0; x < size; x++) {
+            for (let y = 0; y < size; y++) {
+              const pxInfo = getPxInfo(imageData, i * size + x, j * size + y);
+              rgba[0] += pxInfo[0];
+              rgba[1] += pxInfo[1];
+              rgba[2] += pxInfo[2];
+              rgba[3] += pxInfo[3];
+            }
+          }
+          rgba[0] /= size * size;
+          rgba[1] /= size * size;
+          rgba[2] /= size * size;
+          rgba[3] /= size * size;
+        }
+
         // 填充马赛克块
         if (fillMosaicRect) {
           fillMosaicRect(ctx, rgba, i * size, j * size, size, size);
@@ -81,7 +103,7 @@ const getPxInfo = (imgData: ImageData, x: number, y: number): RGBA => {
 };
 
 /**
- * 柯里化 通过 options 获取填充马赛克块方法
+ * 柯里化 通过 options 获取填充乐高马赛克块方法
  * @param options
  * @returns
  */

@@ -1,18 +1,16 @@
-import React, { forwardRef } from "react";
+import React, { FC, forwardRef, ReactNode } from "react";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import {
-  Box,
   Link,
   List,
-  ListSubheader,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Collapse,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DraftsIcon from "@mui/icons-material/Drafts";
-import SendIcon from "@mui/icons-material/Send";
+import { configs, RouteProps } from "./configs";
 
 export const RouterSide = forwardRef(
   ({ onChecked }: { onChecked: () => void }, ref) => {
@@ -32,20 +30,8 @@ export const RouterSide = forwardRef(
           bgcolor: "background.paper",
         }}
       >
-        <Link href="/to-lego" color="inherit" underline="none">
-          <ListItemButton>
-            <ListItemIcon>
-              <SendIcon />
-            </ListItemIcon>
-            <ListItemText primary="Sent mail" />
-          </ListItemButton>
-        </Link>
-        <ListItemButton>
-          <ListItemIcon>
-            <DraftsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Drafts" />
-        </ListItemButton>
+        <RouteLinks configs={configs} onClick={onChecked} />
+
         <ListItemButton onClick={handleClick}>
           <ListItemIcon>
             <InboxIcon />
@@ -73,3 +59,31 @@ export const RouterSide = forwardRef(
     );
   }
 );
+
+const RouteLinks: FC<{ configs: RouteProps[]; onClick?(): void }> = ({
+  configs,
+  onClick,
+}) => {
+  return (
+    <>
+      {configs.map((config, index) => {
+        const { path, title, Icon } = config;
+        return (
+          <RouterLink
+            key={index}
+            to={path}
+            style={{ color: "inherit", textDecoration: "none" }}
+            onClick={onClick}
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <Icon />
+              </ListItemIcon>
+              <ListItemText primary={title} />
+            </ListItemButton>
+          </RouterLink>
+        );
+      })}
+    </>
+  );
+};
