@@ -26,6 +26,12 @@ export const configs: RouteProps[] = [
     Component: CanvasMain,
   },
   {
+    path: "/fun-canvas",
+    title: "Main Page",
+    Icon: InboxIcon,
+    Component: CanvasMain,
+  },
+  {
     path: "/to-lego",
     title: "Canvas to Lego",
     Icon: StarBorder,

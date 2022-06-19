@@ -1,7 +1,6 @@
-import React, { FC, forwardRef, ReactNode } from "react";
+import React, { FC, forwardRef } from "react";
 import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import {
-  Link,
   List,
   ListItemButton,
   ListItemIcon,
@@ -10,7 +9,7 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import { configs, RouteProps } from "./configs";
+import { configs, RouteProps } from "./router-configs";
 
 export const RouterSide = forwardRef(
   ({ onChecked }: { onChecked: () => void }, ref) => {

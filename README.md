@@ -1,6 +1,6 @@
 # 基于 Canvas 开发的有趣的一些小东西
 
-[前往](https://barba828.github.io/barba-app/)
+## [前往](https://barba828.github.io/fun-canvas/)
 
 # TODO
 
