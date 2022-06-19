@@ -104,7 +104,7 @@ export const CanvasToLego: FC = () => {
               选择
             </Button>
             <Button
-              disabled={!canvasRef.current}
+              disabled={!imgSrc || !canvasRef.current}
               className="button"
               onClick={handleDownload}
             >
