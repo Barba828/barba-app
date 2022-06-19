@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/barba-app/static/css/main.0672eb32.css",
-    "main.js": "/barba-app/static/js/main.11acec25.js",
-    "static/js/787.50a8d36b.chunk.js": "/barba-app/static/js/787.50a8d36b.chunk.js",
-    "index.html": "/barba-app/index.html",
-    "main.0672eb32.css.map": "/barba-app/static/css/main.0672eb32.css.map",
-    "main.11acec25.js.map": "/barba-app/static/js/main.11acec25.js.map",
-    "787.50a8d36b.chunk.js.map": "/barba-app/static/js/787.50a8d36b.chunk.js.map"
+    "main.css": "/fun-canvas/static/css/main.8d943ad9.css",
+    "main.js": "/fun-canvas/static/js/main.91aac09b.js",
+    "static/js/787.2fd4ac96.chunk.js": "/fun-canvas/static/js/787.2fd4ac96.chunk.js",
+    "index.html": "/fun-canvas/index.html",
+    "main.8d943ad9.css.map": "/fun-canvas/static/css/main.8d943ad9.css.map",
+    "main.91aac09b.js.map": "/fun-canvas/static/js/main.91aac09b.js.map",
+    "787.2fd4ac96.chunk.js.map": "/fun-canvas/static/js/787.2fd4ac96.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0672eb32.css",
-    "static/js/main.11acec25.js"
+    "static/css/main.8d943ad9.css",
+    "static/js/main.91aac09b.js"
   ]
 }
