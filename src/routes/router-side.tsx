@@ -31,7 +31,7 @@ export const RouterSide = forwardRef(
       >
         <RouteLinks configs={configs} onClick={onChecked} />
 
-        <ListItemButton onClick={handleClick}>
+        {/* <ListItemButton onClick={handleClick}>
           <ListItemIcon>
             <InboxIcon />
           </ListItemIcon>
@@ -53,7 +53,7 @@ export const RouterSide = forwardRef(
               <ListItemText primary="Starred" />
             </ListItemButton>
           </List>
-        </Collapse>
+        </Collapse> */}
       </List>
     );
   }

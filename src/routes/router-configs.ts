@@ -19,27 +19,27 @@ export type RouteProps = {
 };
 
 export const configs: RouteProps[] = [
-  {
-    path: "/",
-    title: "Main Page",
-    Icon: InboxIcon,
-    Component: CanvasMain,
-  },
+  // {
+  //   path: "/",
+  //   title: "Main Page",
+  //   Icon: InboxIcon,
+  //   Component: CanvasMain,
+  // },
   {
     path: "/fun-canvas",
-    title: "Main Page",
+    title: "主页",
     Icon: InboxIcon,
     Component: CanvasMain,
   },
   {
     path: "/to-lego",
-    title: "Canvas to Lego",
+    title: "乐高转换",
     Icon: StarBorder,
     Component: CanvasToLego,
   },
   {
     path: "/to-cube",
-    title: "Canvas to Cube",
+    title: "魔方转换",
     Icon: StarBorder,
     Component: CanvasToCube,
   },

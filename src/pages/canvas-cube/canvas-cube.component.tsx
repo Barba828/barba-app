@@ -43,7 +43,7 @@ export const CanvasToCube: FC = () => {
         imgSrc,
         fillMosaicRect,
         // size,
-        // colorType,
+        colorType: "avg",
       });
     },
     300,

@@ -13,6 +13,10 @@ export const cubeColors: CubeColorType[] = [
     colors: ["#ffffff", "#0285f7", "#02c700", "#fcff00", "#ffa300", "#ff1300"],
   },
   {
+    name: "黑白",
+    colors: ["#ffffff", "#000000"],
+  },
+  {
     name: "魔域 MF3s",
     colors: ["#fbfbfa", "#007ce0", "#007ce0", "#fff600", "#ff720d", "#f20c21"],
   },

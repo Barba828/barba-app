@@ -8,14 +8,20 @@ import { cubeColors } from "./cube-colors";
  */
 export const fillApproximateRectFactory = (options: {
   colorRange?: string[];
+  edgeWidth?: number;
 }): FillMosaicRect => {
-  const { colorRange = cubeColors[0].colors } = options;
+  const { colorRange = cubeColors[0].colors, edgeWidth = 1 } = options;
   const ranges = colorRange.map(stringToRGB);
   return (ctx, rgba, x, y, w, h) => {
     rgba = getApproximateColor(rgba, ranges);
     // 背景色
     ctx.fillStyle = `rgb(${rgba.join(",")})`;
-    ctx.fillRect(x, y, w, h);
+    ctx.fillRect(
+      x + edgeWidth,
+      y + edgeWidth,
+      w - 2 * edgeWidth,
+      h - 2 * edgeWidth
+    );
   };
 };
 
