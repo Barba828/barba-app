@@ -1,3 +1,4 @@
+type RGB = [number, number, number];
 type RGBA = [number, number, number, number];
 type MosaicType = "lego" | "spherical" | "flat";
 type ColorType = "random" | "avg";

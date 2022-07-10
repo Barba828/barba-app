@@ -8,6 +8,7 @@ import { StarBorder } from "@mui/icons-material";
 import { CanvasToLego } from "@/pages/canvas-lego";
 import { CanvasMain } from "@/pages/canvas-main";
 import { CanvasToCube } from "@/pages/canvas-cube";
+import { CanvasColor } from "@/pages/canvas-color/canvas-color.component";
 
 export type RouteProps = {
   path: string;
@@ -42,5 +43,11 @@ export const configs: RouteProps[] = [
     title: "魔方转换",
     Icon: StarBorder,
     Component: CanvasToCube,
+  },
+  {
+    path: "/color-thief",
+    title: "颜色提取",
+    Icon: StarBorder,
+    Component: CanvasColor,
   },
 ];

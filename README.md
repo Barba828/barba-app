@@ -4,6 +4,6 @@
 
 # TODO
 
-- 颜色提取器
-- 魔方块设置
+- 颜色提取器(color-chief)
+- 颜色转换器(color-changer)
 - 颜色监听 Hooks

@@ -51,13 +51,14 @@ export const toMosaic = (
       for (let j = 0; j < Math.floor(canvas.height / size); j++) {
         let rgba: RGBA = [0, 0, 0, 0];
         if (colorType === "random") {
-          //从马赛克块中随机抽出一个像素点信息
+          //从马赛克块中随机抽出一个像素点RGBA信息
           rgba = getPxInfo(
             imageData,
             i * size + Math.floor(Math.random() * size),
             j * size + Math.floor(Math.random() * size)
           );
         } else if (colorType === "avg") {
+          //从马赛克块中全部像素点获取平均RGBA信息
           for (let x = 0; x < size; x++) {
             for (let y = 0; y < size; y++) {
               const pxInfo = getPxInfo(imageData, i * size + x, j * size + y);
@@ -91,7 +92,7 @@ export const toMosaic = (
  * @param y
  * @returns RGBA[]
  */
-const getPxInfo = (imgData: ImageData, x: number, y: number): RGBA => {
+export const getPxInfo = (imgData: ImageData, x: number, y: number): RGBA => {
   const color = [];
   const data = imgData.data;
   const w = imgData.width;
@@ -215,3 +216,5 @@ const flatButton: FillMosaicRect = (ctx, rgba, x, y, w, h, r = 3) => {
 };
 
 export const mosaicType: MosaicType[] = ["lego", "spherical", "flat"];
+export const defautCanvasWidth =
+  window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);

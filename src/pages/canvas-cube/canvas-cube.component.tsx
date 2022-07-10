@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { useDebounce, useDownloader, useUploader } from "@/hooks";
 import {
   Button,
@@ -8,25 +8,22 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Slider,
+  Typography,
 } from "@mui/material";
 import { fillApproximateRectFactory } from "./utils";
-import { toMosaic } from "@/pages/canvas-lego/utils";
+import { defautCanvasWidth, toMosaic } from "@/pages/canvas-lego/utils";
 
 import "@/pages/canvas-lego/canvas-lego.component.css";
-import { type } from "@testing-library/user-event/dist/type";
 import { cubeColors } from "./cube-colors";
-
-const defautWidth =
-  window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);
 
 export const CanvasToCube: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [width, setWidth] = React.useState<number>(defautWidth);
-  const [colorIndex, setColorIndex] = React.useState<number>(0);
-  const [colorRange, setColorRange] = React.useState<string[]>(
-    cubeColors[0].colors
-  );
+  const [size, setSize] = useState<number>(20);
+  const [width, setWidth] = useState<number>(defautCanvasWidth);
+  const [colorIndex, setColorIndex] = useState<number>(0);
+  const [colorRange, setColorRange] = useState<string[]>(cubeColors[0].colors);
 
   const { src: imgSrc, blob, openFile } = useUploader();
   const { downloadFile } = useDownloader(canvasRef.current, blob);
@@ -42,12 +39,12 @@ export const CanvasToCube: FC = () => {
       toMosaic(canvasRef.current, {
         imgSrc,
         fillMosaicRect,
-        // size,
+        size,
         colorType: "avg",
       });
     },
     300,
-    [imgSrc, colorRange]
+    [imgSrc, size, width, colorRange]
   );
 
   useEffect(() => {
@@ -60,6 +57,14 @@ export const CanvasToCube: FC = () => {
   const handleChangeColorRange = ({ target }: SelectChangeEvent) => {
     setColorIndex(Number(target.value));
     setColorRange(cubeColors[Number(target.value)].colors);
+  };
+
+  const handleChangeSize = (_e: Event, value: number | number[]) => {
+    setSize(value as number);
+  };
+
+  const handleChangeWidth = (_e: Event, value: number | number[]) => {
+    setWidth(value as number);
   };
 
   return (
@@ -93,6 +98,19 @@ export const CanvasToCube: FC = () => {
               ))}
             </Select>
           </FormControl>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary">
+            画布尺寸 {width}
+          </Typography>
+          <Slider
+            min={200}
+            max={2000}
+            value={width}
+            onChange={handleChangeWidth}
+          />
+          <Typography sx={{ fontSize: 14 }} color="text.secondary">
+            颗粒尺寸 {size}
+          </Typography>
+          <Slider min={10} max={100} value={size} onChange={handleChangeSize} />
         </Card>
         {imgSrc && (
           <img src={imgSrc} className="lego-preview" alt="pic" height={220} />

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useRef } from "react";
-import { fillLegoRectFactory, toMosaic } from "./utils";
+import { defautCanvasWidth, fillLegoRectFactory, toMosaic } from "./utils";
 import { useUploader, useDebounce, useDownloader } from "@/hooks";
 import "./canvas-lego.component.css";
 import {
@@ -14,14 +14,11 @@ import {
   Typography,
 } from "@mui/material";
 
-const defautWidth =
-  window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);
-
 export const CanvasToLego: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [size, setSize] = useState<number>(20);
-  const [width, setWidth] = useState<number>(defautWidth);
+  const [width, setWidth] = useState<number>(defautCanvasWidth);
   const [radiu, setRadiu] = useState<number>(3);
 
   const [type, setType] = useState<MosaicType>("lego");

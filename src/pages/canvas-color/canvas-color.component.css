@@ -1,0 +1,30 @@
+.color-card {
+  padding: 0px;
+  width: min-content;
+}
+
+.color-container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.color-container .color-view {
+  width: calc(25% - 12px);
+  margin: 6px;
+  transform: opacity(1);
+  transition: 1s;
+}
+
+.color-container .color-view > button {
+  width: 100%;
+}
+
+.color-container > :hover {
+  transform: scale(0.9);
+  transition: 0.2s;
+}
+
+.color-container .color-item {
+  height: 50px;
+}

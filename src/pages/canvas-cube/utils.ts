@@ -19,7 +19,7 @@ export const fillApproximateRectFactory = (options: {
     ctx.fillRect(
       x + edgeWidth,
       y + edgeWidth,
-      w - 2 * edgeWidth,
+      w - 2 * edgeWidth, // 贴纸厚度
       h - 2 * edgeWidth
     );
   };

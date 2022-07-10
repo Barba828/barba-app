@@ -24,6 +24,20 @@ export const H2RGB = (h: number): RGBA => {
 };
 
 /**
+ * RGB格式转换为六位数十六进制颜色值
+ * @param rgb
+ * @returns
+ */
+export const RGB2String = (rgb: RGBA) => {
+  let str = "#";
+  rgb.forEach((num) => {
+    const hex = num.toString(16).padStart(2, "0");
+    str += hex;
+  });
+  return str;
+};
+
+/**
  * 色彩相对距离
  * @param arrRGB1
  * @param arrRGB2
