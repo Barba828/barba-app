@@ -8,7 +8,6 @@ import {
   Collapse,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
 import { configs, RouteProps } from "./router-configs";
 
 export const RouterSide = forwardRef(

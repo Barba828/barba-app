@@ -8,7 +8,7 @@ import { StarBorder } from "@mui/icons-material";
 import { CanvasToLego } from "@/pages/canvas-lego";
 import { CanvasMain } from "@/pages/canvas-main";
 import { CanvasToCube } from "@/pages/canvas-cube";
-import { CanvasColor } from "@/pages/canvas-color/canvas-color.component";
+import { CanvasColor } from "@/pages/canvas-color";
 
 export type RouteProps = {
   path: string;
