@@ -15,7 +15,6 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "browser-fs-access": "^0.29.6",
-    "clipboard": "^2.0.11",
     "gh-pages": "^4.0.0",
     "quantize": "^1.0.2",
     "react": "^18.1.0",
