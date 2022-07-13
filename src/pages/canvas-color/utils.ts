@@ -1,8 +1,8 @@
-import quantize from "quantize";
+import { quantize } from "ts-color-quantize";
 import { getPxInfo } from "@/pages/canvas-lego/utils";
 
 /**
- * 将图片转换为马赛克
+ * 获取图片颜色分区
  * @param canvas
  * @param options
  * @returns
@@ -38,6 +38,7 @@ export const getQuantize = (
 
       const imageData = draw();
       const rgbaList = getColorList(imageData);
+
       colorMap = quantize(rgbaList, number);
       resolve(colorMap);
     };
@@ -57,7 +58,6 @@ export const getQuantize = (
     const getColorList = (imageData: ImageData) => {
       const rgbaList = [];
 
-      // 生成 i * j 的马赛克块
       for (let i = 0; i < canvas.width; i++) {
         for (let j = 0; j < canvas.height; j++) {
           const rgba = getPxInfo(imageData, i, j);
