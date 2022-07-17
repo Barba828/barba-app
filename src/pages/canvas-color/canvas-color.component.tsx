@@ -53,31 +53,36 @@ export const CanvasColor: FC = () => {
           />
         </Card>
       </div>
-      <Card sx={{ minWidth: 200 }} className="lego-setting color-card">
-        <div className="canvas-mosaic">
-          <canvas
-            ref={canvasRef}
-            id="mosaic"
-            width={defautCanvasWidth}
-          ></canvas>
-        </div>
-        <div className="color-container">
-          {colors.map((rgba, index) => {
-            const color = `rgb(${rgba.join(",")})`;
-            const colorString = RGB2String(rgba);
-            return (
-              <Card
-                className="color-view"
-                key={index}
-                onClick={() => copyText(colorString)}
-              >
-                <div style={{ background: color }} className="color-item"></div>
-                <Button>{colorString}</Button>
-              </Card>
-            );
-          })}
-        </div>
-      </Card>
+      {imgSrc && (
+        <Card sx={{ minWidth: 200 }} className="lego-setting color-card">
+          <div className="canvas-mosaic">
+            <canvas
+              ref={canvasRef}
+              id="mosaic"
+              width={defautCanvasWidth}
+            ></canvas>
+          </div>
+          <div className="color-container">
+            {colors.map((rgba, index) => {
+              const color = `rgb(${rgba.join(",")})`;
+              const colorString = RGB2String(rgba);
+              return (
+                <Card
+                  className="color-view"
+                  key={index}
+                  onClick={() => copyText(colorString)}
+                >
+                  <div
+                    style={{ background: color }}
+                    className="color-item"
+                  ></div>
+                  <Button>{colorString}</Button>
+                </Card>
+              );
+            })}
+          </div>
+        </Card>
+      )}
     </div>
   );
 };

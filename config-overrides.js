@@ -1,7 +1,8 @@
 const path = require("path");
 
 /**
- * react-app-rewired override config 配置别名
+ * react-app-rewired override config
+ * 配置别名
  */
 module.exports = function override(config) {
   config.resolve = {
