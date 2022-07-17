@@ -1,4 +1,4 @@
-import { quantize } from "ts-color-quantize";
+import { quantize } from "../../lib/quantize/src";
 import { getPxInfo } from "@/pages/canvas-lego/utils";
 
 /**
@@ -8,7 +8,7 @@ import { getPxInfo } from "@/pages/canvas-lego/utils";
  * @returns
  */
 export const getQuantize = (
-  canvas: HTMLCanvasElement,
+  canvas: HTMLCanvasElement = document.createElement("canvas"),
   options: {
     /**
      * 图片地址

@@ -33,19 +33,19 @@ export const configs: RouteProps[] = [
     Component: CanvasMain,
   },
   {
-    path: "/to-lego",
+    path: "/fun-canvas/to-lego",
     title: "乐高转换",
     Icon: StarBorder,
     Component: CanvasToLego,
   },
   {
-    path: "/to-cube",
+    path: "/fun-canvas/to-cube",
     title: "魔方转换",
     Icon: StarBorder,
     Component: CanvasToCube,
   },
   {
-    path: "/color-thief",
+    path: "/fun-canvas/color-thief",
     title: "颜色提取",
     Icon: StarBorder,
     Component: CanvasColor,

@@ -47,7 +47,7 @@ export const CanvasColor: FC = () => {
           </Typography>
           <Slider
             min={1}
-            max={10}
+            max={12}
             value={number}
             onChange={handleChangeNumber}
           />

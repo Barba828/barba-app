@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 // image 右键菜单
 chrome.runtime.onInstalled.addListener(async () => {
   chrome.contextMenus.create({

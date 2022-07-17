@@ -1,0 +1,3 @@
+[submodule "src/lib/quantize"]
+	path = src/lib/quantize
+	url = https://github.com/Barba828/color-quantize.git
