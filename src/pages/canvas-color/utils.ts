@@ -1,4 +1,4 @@
-import { quantize } from "../../lib/quantize/src";
+import { quantize } from "~/quantize/src";
 import { getPxInfo } from "@/pages/canvas-lego/utils";
 
 /**
@@ -29,9 +29,7 @@ export const getQuantize = (
   const image = new Image();
   image.src = imgSrc;
 
-  return new Promise((resolve, reject) => {
-    let colorMap: any = null;
-
+  return new Promise<ReturnType<typeof quantize>>((resolve, reject) => {
     image.onload = function () {
       const heightRate = image.height / image.width;
       canvas.height = canvas.width * heightRate;
@@ -39,7 +37,7 @@ export const getQuantize = (
       const imageData = draw();
       const rgbaList = getColorList(imageData);
 
-      colorMap = quantize(rgbaList, number);
+      const colorMap = quantize(rgbaList, number);
       resolve(colorMap);
     };
 

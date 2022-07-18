@@ -11,40 +11,81 @@ import {
   Slider,
   Typography,
 } from "@mui/material";
-import { fillApproximateRectFactory } from "./utils";
+import { fillApproximateRectFactory, fillPixelRectFactory } from "./utils";
 import { defautCanvasWidth, toMosaic } from "@/pages/canvas-lego/utils";
 
 import "@/pages/canvas-lego/canvas-lego.component.css";
 import { cubeColors } from "./cube-colors";
+import { getQuantize } from "../canvas-color/utils";
 
-export const CanvasToCube: FC = () => {
+export const CanvasToCubeInner: FC<{ type: "rubik" | "pixel" }> = ({
+  type,
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [size, setSize] = useState<number>(20);
   const [width, setWidth] = useState<number>(defautCanvasWidth);
-  const [colorIndex, setColorIndex] = useState<number>(0);
-  const [colorRange, setColorRange] = useState<string[]>(cubeColors[0].colors);
+  const [pixelColorNums, setPixelColorNums] = useState<number>(12);
+  const [rubikColorIndex, setRubikColorIndex] = useState<number>(0);
+  const [rubikColorRange, setRubicColorRange] = useState<string[]>(
+    cubeColors[0].colors
+  );
 
   const { src: imgSrc, blob, openFile } = useUploader();
   const { downloadFile } = useDownloader(canvasRef.current, blob);
 
-  const debounceToCube = useDebounce(
-    () => {
+  const toRubikCube = () => {
+    if (!canvasRef.current) {
+      return;
+    }
+
+    const fillMosaicRect = fillApproximateRectFactory({
+      colorRange: rubikColorRange,
+    });
+    toMosaic(canvasRef.current, {
+      imgSrc,
+      fillMosaicRect,
+      size,
+      colorType: "avg",
+    });
+  };
+
+  const toPixelCube = () => {
+    getQuantize(undefined, {
+      imgSrc,
+      number: pixelColorNums,
+    }).then((colorMap) => {
+      const fillMosaicRect = fillPixelRectFactory({
+        ranges: colorMap.palette() as RGBA[],
+      });
       if (!canvasRef.current) {
         return;
       }
-
-      const fillMosaicRect = fillApproximateRectFactory({ colorRange });
-
       toMosaic(canvasRef.current, {
         imgSrc,
         fillMosaicRect,
         size,
         colorType: "avg",
       });
+    });
+  };
+
+  const debounceToCube = useDebounce(
+    () => {
+      switch (type) {
+        case "rubik":
+          toRubikCube();
+          break;
+        case "pixel":
+          toPixelCube();
+          break;
+        default:
+          toPixelCube();
+          break;
+      }
     },
     300,
-    [imgSrc, size, width, colorRange]
+    [imgSrc, size, width, rubikColorRange, pixelColorNums]
   );
 
   useEffect(() => {
@@ -55,8 +96,8 @@ export const CanvasToCube: FC = () => {
   }, [canvasRef, debounceToCube]);
 
   const handleChangeColorRange = ({ target }: SelectChangeEvent) => {
-    setColorIndex(Number(target.value));
-    setColorRange(cubeColors[Number(target.value)].colors);
+    setRubikColorIndex(Number(target.value));
+    setRubicColorRange(cubeColors[Number(target.value)].colors);
   };
 
   const handleChangeSize = (_e: Event, value: number | number[]) => {
@@ -65,6 +106,10 @@ export const CanvasToCube: FC = () => {
 
   const handleChangeWidth = (_e: Event, value: number | number[]) => {
     setWidth(value as number);
+  };
+
+  const handleChangePixelColorNums = (_e: Event, value: number | number[]) => {
+    setPixelColorNums(value as number);
   };
 
   return (
@@ -83,21 +128,38 @@ export const CanvasToCube: FC = () => {
               保存
             </Button>
           </div>
-          <FormControl className="controller" fullWidth>
-            <InputLabel id="cube-type">魔方贴纸风格</InputLabel>
-            <Select
-              labelId="cube-type"
-              value={colorIndex.toString()}
-              label="魔方贴纸风格"
-              onChange={handleChangeColorRange}
-            >
-              {cubeColors.map((item, index) => (
-                <MenuItem key={index} value={index}>
-                  {item.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          {type === "rubik" && (
+            <>
+              <FormControl className="controller" fullWidth>
+                <InputLabel id="cube-type">魔方贴纸风格</InputLabel>
+                <Select
+                  labelId="cube-type"
+                  value={rubikColorIndex.toString()}
+                  label="魔方贴纸风格"
+                  onChange={handleChangeColorRange}
+                >
+                  {cubeColors.map((item, index) => (
+                    <MenuItem key={index} value={index}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </>
+          )}
+          {type === "pixel" && (
+            <>
+              <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                色彩数量 {pixelColorNums}
+              </Typography>
+              <Slider
+                min={2}
+                max={32}
+                value={pixelColorNums}
+                onChange={handleChangePixelColorNums}
+              />
+            </>
+          )}
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
             画布尺寸 {width}
           </Typography>
@@ -110,7 +172,7 @@ export const CanvasToCube: FC = () => {
           <Typography sx={{ fontSize: 14 }} color="text.secondary">
             颗粒尺寸 {size}
           </Typography>
-          <Slider min={10} max={100} value={size} onChange={handleChangeSize} />
+          <Slider min={1} max={100} value={size} onChange={handleChangeSize} />
         </Card>
         {imgSrc && (
           <img src={imgSrc} className="lego-preview" alt="pic" height={220} />
@@ -122,3 +184,6 @@ export const CanvasToCube: FC = () => {
     </div>
   );
 };
+
+export const CanvasToRubic = () => <CanvasToCubeInner type="rubik" />;
+export const CanvasToPixel = () => <CanvasToCubeInner type="pixel" />;

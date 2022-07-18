@@ -7,7 +7,7 @@ import { StarBorder } from "@mui/icons-material";
 
 import { CanvasToLego } from "@/pages/canvas-lego";
 import { CanvasMain } from "@/pages/canvas-main";
-import { CanvasToCube } from "@/pages/canvas-cube";
+import { CanvasToRubic, CanvasToPixel } from "@/pages/canvas-cube";
 import { CanvasColor } from "@/pages/canvas-color";
 
 export type RouteProps = {
@@ -34,15 +34,21 @@ export const configs: RouteProps[] = [
   },
   {
     path: "/fun-canvas/to-lego",
-    title: "乐高转换",
+    title: "乐高风格",
     Icon: StarBorder,
     Component: CanvasToLego,
   },
   {
-    path: "/fun-canvas/to-cube",
-    title: "魔方转换",
+    path: "/fun-canvas/to-rubik",
+    title: "魔方墙风格",
     Icon: StarBorder,
-    Component: CanvasToCube,
+    Component: CanvasToRubic,
+  },
+  {
+    path: "/fun-canvas/to-pixel",
+    title: "像素风格",
+    Icon: StarBorder,
+    Component: CanvasToPixel,
   },
   {
     path: "/fun-canvas/color-thief",

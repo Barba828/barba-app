@@ -10,6 +10,7 @@ module.exports = function override(config) {
     alias: {
       ...config.alias,
       "@": path.resolve(__dirname, "src"),
+      "~": path.resolve(__dirname, "src/lib"),
     },
   };
 

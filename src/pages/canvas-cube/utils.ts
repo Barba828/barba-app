@@ -26,6 +26,23 @@ export const fillApproximateRectFactory = (options: {
 };
 
 /**
+ * 柯里化 通过 options 获取填充像素颜色马赛克块方法
+ * @param options
+ * @returns
+ */
+export const fillPixelRectFactory = (options: {
+  ranges?: RGBA[];
+}): FillMosaicRect => {
+  const { ranges = [] } = options;
+  return (ctx, rgba, x, y, w, h) => {
+    rgba = getApproximateColor(rgba, ranges);
+    // 背景色
+    ctx.fillStyle = `rgb(${rgba.join(",")})`;
+    ctx.fillRect(x, y, w, h);
+  };
+};
+
+/**
  * 从可选项中获取近似颜色
  * @param rgba
  * @param ranges 可选颜色数组
