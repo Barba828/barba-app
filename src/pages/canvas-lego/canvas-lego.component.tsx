@@ -23,7 +23,7 @@ export const CanvasToLego: FC = () => {
 
   const [type, setType] = useState<MosaicType>("lego");
   const [shadow, setShadow] = useState<ShadowType>("front");
-  const [colorType, setColorType] = useState<ColorType>("random");
+  const [colorType, setColorType] = useState<ColorType>("avg");
 
   const { src: imgSrc, blob, openFile } = useUploader();
   const { downloadFile } = useDownloader(canvasRef.current, blob);

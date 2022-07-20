@@ -8,7 +8,7 @@ import { StarBorder } from "@mui/icons-material";
 import { CanvasToLego } from "@/pages/canvas-lego";
 import { CanvasMain } from "@/pages/canvas-main";
 import { CanvasToRubic, CanvasToPixel } from "@/pages/canvas-cube";
-import { CanvasColor } from "@/pages/canvas-color";
+import { CanvasColor, CanvasColorPicker } from "@/pages/canvas-color";
 
 export type RouteProps = {
   path: string;
@@ -20,12 +20,6 @@ export type RouteProps = {
 };
 
 export const configs: RouteProps[] = [
-  // {
-  //   path: "/",
-  //   title: "Main Page",
-  //   Icon: InboxIcon,
-  //   Component: CanvasMain,
-  // },
   {
     path: "/fun-canvas",
     title: "主页",
@@ -39,21 +33,27 @@ export const configs: RouteProps[] = [
     Component: CanvasToLego,
   },
   {
-    path: "/fun-canvas/to-rubik",
-    title: "魔方墙风格",
-    Icon: StarBorder,
-    Component: CanvasToRubic,
-  },
-  {
     path: "/fun-canvas/to-pixel",
     title: "像素风格",
     Icon: StarBorder,
     Component: CanvasToPixel,
   },
   {
+    path: "/fun-canvas/to-rubik",
+    title: "魔方墙风格",
+    Icon: StarBorder,
+    Component: CanvasToRubic,
+  },
+  {
     path: "/fun-canvas/color-thief",
-    title: "颜色提取",
+    title: "主题色提取",
     Icon: StarBorder,
     Component: CanvasColor,
+  },
+  {
+    path: "/fun-canvas/color-picker",
+    title: "相关色获取",
+    Icon: StarBorder,
+    Component: CanvasColorPicker,
   },
 ];

@@ -34,7 +34,7 @@
     "deploy": "gh-pages -d build",
     "serve": "serve ./build"
   },
-  "homepage": "https://barba828.github.io",
+  "homepage": "https://barba828.github.io/fun-canvas",
   "eslintConfig": {
     "extends": [
       "react-app",

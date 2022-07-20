@@ -1,33 +1,37 @@
-import React, { FC, useState, useEffect, useRef } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { useUploader } from "@/hooks";
 import { Button, Card, Slider, Typography } from "@mui/material";
 
 import "@/pages/canvas-lego/canvas-lego.component.css";
 import "./canvas-color.component.css";
 import { getQuantize } from "./utils";
-import { defautCanvasWidth } from "@/pages/canvas-lego/utils";
 import { copyText } from "@/utils/clipboard";
 import { RGB2String } from "@/utils/color";
 
 export const CanvasColor: FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const [colors, setColors] = useState<RGBA[]>([]);
+  const [mainColor, setMainColor] = useState<RGBA>();
   const [number, setNumber] = useState<number>(4);
 
   const { src: imgSrc, openFile } = useUploader();
 
   useEffect(() => {
-    if (!canvasRef.current) {
-      return;
-    }
-    getQuantize(canvasRef.current, {
+    getQuantize(undefined, {
       imgSrc,
       number,
     }).then((colorMap) => {
-      setColors((colorMap as any).palette());
+      setColors(colorMap.palette() as RGBA[]);
     });
-  }, [canvasRef, imgSrc, number]);
+  }, [imgSrc, number]);
+
+  useEffect(() => {
+    getQuantize(undefined, {
+      imgSrc,
+      number: 1,
+    }).then((colorMap) => {
+      setMainColor((colorMap.palette() as RGBA[])[0]);
+    });
+  }, [imgSrc]);
 
   const handleChangeNumber = (_e: Event, value: number | number[]) => {
     setNumber(value as number);
@@ -54,20 +58,32 @@ export const CanvasColor: FC = () => {
         </Card>
       </div>
       {imgSrc && (
-        <Card sx={{ minWidth: 200 }} className="lego-setting color-card">
-          <div className="canvas-mosaic">
-            <canvas
-              ref={canvasRef}
-              id="mosaic"
-              width={defautCanvasWidth}
-            ></canvas>
-          </div>
+        <Card sx={{ minWidth: 800 }} className="lego-setting color-card">
+          <img src={imgSrc} alt="pic" width={"100%"} />
+          <h3>主题色</h3>
+          {mainColor && (
+            <div className="color-container">
+              <Card
+                sx={{ minWidth: 100 }}
+                className="color-view"
+                onClick={() => copyText(RGB2String(mainColor))}
+              >
+                <div
+                  style={{ background: `rgb(${mainColor.join(",")})` }}
+                  className="color-item"
+                ></div>
+                <Button>{RGB2String(mainColor)}</Button>
+              </Card>
+            </div>
+          )}
+          <h3>相关色</h3>
           <div className="color-container">
             {colors.map((rgba, index) => {
               const color = `rgb(${rgba.join(",")})`;
               const colorString = RGB2String(rgba);
               return (
                 <Card
+                  sx={{ minWidth: 100 }}
                   className="color-view"
                   key={index}
                   onClick={() => copyText(colorString)}

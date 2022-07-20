@@ -33,7 +33,7 @@ export const toMosaic = (
   const image = new Image();
 
   image.src = imgSrc;
-  image.onload = function () {
+  image.onload = () => {
     const heightRate = image.height / image.width;
     canvas.height = canvas.width * heightRate;
     draw();
@@ -99,7 +99,7 @@ export const getPxInfo = (imgData: ImageData, x: number, y: number): RGBA => {
   color[0] = data[(y * w + x) * 4];
   color[1] = data[(y * w + x) * 4 + 1];
   color[2] = data[(y * w + x) * 4 + 2];
-  color[3] = data[(y * w + x) * 4 + 3];
+  color[3] = (data[(y * w + x) * 4 + 3] / 255).toFixed(2); // 第 4 位是透明度
   return color as RGBA;
 };
 

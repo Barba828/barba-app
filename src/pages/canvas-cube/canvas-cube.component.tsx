@@ -23,9 +23,9 @@ export const CanvasToCubeInner: FC<{ type: "rubik" | "pixel" }> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const [size, setSize] = useState<number>(20);
+  const [size, setSize] = useState<number>(type === "pixel" ? 5 : 20);
   const [width, setWidth] = useState<number>(defautCanvasWidth);
-  const [pixelColorNums, setPixelColorNums] = useState<number>(12);
+  const [pixelColorNums, setPixelColorNums] = useState<number>(8);
   const [rubikColorIndex, setRubikColorIndex] = useState<number>(0);
   const [rubikColorRange, setRubicColorRange] = useState<string[]>(
     cubeColors[0].colors

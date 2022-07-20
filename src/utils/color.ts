@@ -28,9 +28,9 @@ export const H2RGB = (h: number): RGBA => {
  * @param rgb
  * @returns
  */
-export const RGB2String = (rgb: RGBA) => {
+export const RGB2String = (rgb: RGBA, alpha: boolean = false) => {
   let str = "#";
-  rgb.forEach((num) => {
+  rgb.slice(0, 3).forEach((num) => {
     const hex = num.toString(16).padStart(2, "0");
     str += hex;
   });
