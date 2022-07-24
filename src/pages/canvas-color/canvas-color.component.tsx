@@ -16,6 +16,7 @@ export const CanvasColor: FC = () => {
   const { src: imgSrc, openFile } = useUploader();
 
   useEffect(() => {
+    // Closed Color
     getQuantize(undefined, {
       imgSrc,
       number,
@@ -25,6 +26,7 @@ export const CanvasColor: FC = () => {
   }, [imgSrc, number]);
 
   useEffect(() => {
+    // Main Color
     getQuantize(undefined, {
       imgSrc,
       number: 1,

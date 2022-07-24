@@ -12,11 +12,12 @@ import {
   Typography,
 } from "@mui/material";
 import { fillApproximateRectFactory, fillPixelRectFactory } from "./utils";
-import { defautCanvasWidth, toMosaic } from "@/pages/canvas-lego/utils";
+import { toMosaic } from "@/pages/canvas-lego/utils";
 
 import "@/pages/canvas-lego/canvas-lego.component.css";
 import { cubeColors } from "./cube-colors";
 import { getQuantize } from "../canvas-color/utils";
+import { defautCanvasWidth } from "@/utils/image";
 
 export const CanvasToCubeInner: FC<{ type: "rubik" | "pixel" }> = ({
   type,

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState, useRef } from "react";
-import { defautCanvasWidth, fillLegoRectFactory, toMosaic } from "./utils";
+import { fillLegoRectFactory, toMosaic } from "./utils";
 import { useUploader, useDebounce, useDownloader } from "@/hooks";
 import "./canvas-lego.component.css";
 import {
@@ -13,6 +13,7 @@ import {
   Card,
   Typography,
 } from "@mui/material";
+import { defautCanvasWidth } from "@/utils/image";
 
 export const CanvasToLego: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -136,6 +137,7 @@ export const CanvasToLego: FC = () => {
             >
               <MenuItem value={"random"}>随机</MenuItem>
               <MenuItem value={"avg"}>平均值</MenuItem>
+              <MenuItem value={"main"}>主要色</MenuItem>
             </Select>
           </FormControl>
         </Card>

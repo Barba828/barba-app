@@ -1,3 +1,6 @@
+import { getAreaPixelByImgData, getPixelByImgData } from "@/utils/image";
+import { quantize } from "~/quantize/src";
+
 /**
  * 将图片转换为马赛克
  * @param canvas
@@ -44,34 +47,47 @@ export const toMosaic = (
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
     // 获取图片像素数据后清空 ctx
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // 生成 i * j 的马赛克块
-    for (let i = 0; i < Math.floor(canvas.width / size); i++) {
-      for (let j = 0; j < Math.floor(canvas.height / size); j++) {
+    for (let i = 0; i < Math.ceil(canvas.width / size); i++) {
+      for (let j = 0; j < Math.ceil(canvas.height / size); j++) {
         let rgba: RGBA = [0, 0, 0, 0];
         if (colorType === "random") {
-          //从马赛克块中随机抽出一个像素点RGBA信息
-          rgba = getPxInfo(
+          // 从马赛克块中随机抽出一个像素点 RGBA 信息
+          rgba = getPixelByImgData(
             imageData,
             i * size + Math.floor(Math.random() * size),
             j * size + Math.floor(Math.random() * size)
           );
         } else if (colorType === "avg") {
-          //从马赛克块中全部像素点获取平均RGBA信息
-          for (let x = 0; x < size; x++) {
-            for (let y = 0; y < size; y++) {
-              const pxInfo = getPxInfo(imageData, i * size + x, j * size + y);
-              rgba[0] += pxInfo[0];
-              rgba[1] += pxInfo[1];
-              rgba[2] += pxInfo[2];
-              rgba[3] += pxInfo[3];
-            }
-          }
-          rgba[0] /= size * size;
-          rgba[1] /= size * size;
-          rgba[2] /= size * size;
-          rgba[3] /= size * size;
+          // 从马赛克块中全部像素点获取平均 RGBA 信息
+          const rgbaList = getAreaPixelByImgData(
+            imageData,
+            i * size,
+            j * size,
+            size,
+            size
+          );
+          // 将 RGBA 数组求和再除以数组长度
+          rgba = rgbaList
+            .reduce(
+              // eslint-disable-next-line no-loop-func
+              (pre, tmp) =>
+                tmp.map((_t, index) => pre[index] + tmp[index]) as RGBA
+            )
+            .map((item) => (item /= size * size)) as RGBA;
+        } else if (colorType === "main") {
+          // 从马赛克块中获取全部 RGBA 信息并获取主题色
+          const rgbaList = getAreaPixelByImgData(
+            imageData,
+            i * size,
+            j * size,
+            size,
+            size
+          );
+          const colorMap = quantize(rgbaList, 1);
+          rgba = (colorMap.palette() as RGBA[])[0];
         }
 
         // 填充马赛克块
@@ -83,24 +99,6 @@ export const toMosaic = (
       }
     }
   };
-};
-
-/**
- * 获取图片(x, y)位置的像素点RGBA值
- * @param imgData
- * @param x
- * @param y
- * @returns RGBA[]
- */
-export const getPxInfo = (imgData: ImageData, x: number, y: number): RGBA => {
-  const color = [];
-  const data = imgData.data;
-  const w = imgData.width;
-  color[0] = data[(y * w + x) * 4];
-  color[1] = data[(y * w + x) * 4 + 1];
-  color[2] = data[(y * w + x) * 4 + 2];
-  color[3] = (data[(y * w + x) * 4 + 3] / 255).toFixed(2); // 第 4 位是透明度
-  return color as RGBA;
 };
 
 /**
@@ -216,5 +214,3 @@ const flatButton: FillMosaicRect = (ctx, rgba, x, y, w, h, r = 3) => {
 };
 
 export const mosaicType: MosaicType[] = ["lego", "spherical", "flat"];
-export const defautCanvasWidth =
-  window.innerWidth > 1920 ? 1920 : Math.ceil(window.innerWidth * 0.8);

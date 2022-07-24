@@ -4,10 +4,13 @@ import { Button, Card } from "@mui/material";
 
 import "@/pages/canvas-lego/canvas-lego.component.css";
 import "./canvas-color.component.css";
-import { drawCanvasImage, getPixelData, getRelateColor } from "./utils";
-import { defautCanvasWidth } from "@/pages/canvas-lego/utils";
-import { copyText } from "@/utils/clipboard";
+import { getRelateColor } from "./utils";
 import { RGB2String } from "@/utils/color";
+import {
+  defautCanvasWidth,
+  drawCanvasImage,
+  getPixelByCanvas,
+} from "@/utils/image";
 
 export const CanvasColorPicker: FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -31,7 +34,13 @@ export const CanvasColorPicker: FC = () => {
     }
 
     const listener = (e: MouseEvent) => {
-      const color = getPixelData(canvasRef.current!, e.offsetX, e.offsetY);
+      const x =
+        (e.offsetX * canvasRef.current!.width) / canvasRef.current!.offsetWidth;
+      const y =
+        (e.offsetY * canvasRef.current!.height) /
+        canvasRef.current!.offsetHeight;
+      const color = getPixelByCanvas(canvasRef.current!, x, y);
+
       if (color) {
         setOverColor(color);
         setRelateColor(getRelateColor(color));

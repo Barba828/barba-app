@@ -1,5 +1,5 @@
 import { quantize } from "~/quantize/src";
-import { getPxInfo } from "@/pages/canvas-lego/utils";
+import { getAreaPixelByImgData } from "@/utils/image";
 
 /**
  * 获取图片颜色分区
@@ -35,7 +35,7 @@ export const getQuantize = (
       canvas.height = canvas.width * heightRate;
 
       const imageData = draw();
-      const rgbaList = getColorList(imageData);
+      const rgbaList = getAreaPixelByImgData(imageData, 0, 0);
 
       const colorMap = quantize(rgbaList, number);
       resolve(colorMap);
@@ -49,47 +49,7 @@ export const getQuantize = (
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       return imageData;
     };
-
-    /**
-     * 获取全部 RGBA 列表
-     */
-    const getColorList = (imageData: ImageData) => {
-      const rgbaList = [];
-
-      for (let i = 0; i < canvas.width; i++) {
-        for (let j = 0; j < canvas.height; j++) {
-          const rgba = getPxInfo(imageData, i, j);
-          rgbaList.push(rgba);
-        }
-      }
-      return rgbaList;
-    };
   });
-};
-
-/**
- * 获取固定像素点
- * @param canvas
- * @param x
- * @param y
- * @returns
- */
-export const getPixelData = (
-  canvas: HTMLCanvasElement,
-  x: number,
-  y: number
-): RGBA => {
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    return [255, 255, 255, 0];
-  }
-  const imageData = ctx.getImageData(x, y, 1, 1).data;
-  return [
-    imageData[0],
-    imageData[1],
-    imageData[2],
-    Number((imageData[3] / 255).toFixed(2)),
-  ];
 };
 
 /**
@@ -138,33 +98,4 @@ export const getRelateColor = (
     colors[index] = relateColor;
   }
   return colors.reverse();
-};
-
-export const drawCanvasImage = (
-  canvas: HTMLCanvasElement,
-  options: {
-    /**
-     * 图片地址
-     */
-    imgSrc: string;
-    callback?(imageData?: ImageData): void;
-  }
-) => {
-  const ctx = canvas.getContext("2d");
-  const { imgSrc, callback } = options;
-
-  if (!ctx || !imgSrc) {
-    return;
-  }
-
-  const image = new Image();
-  image.src = imgSrc;
-  image.onload = () => {
-    canvas.width = image.width;
-    canvas.height = image.height;
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    callback?.(imageData);
-  };
 };

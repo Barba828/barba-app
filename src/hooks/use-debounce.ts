@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useCallback } from "react";
 
 export const useDebounce = (fn: Function, delay: number, dep: any[] = []) => {

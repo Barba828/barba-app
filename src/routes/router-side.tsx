@@ -1,11 +1,9 @@
 import React, { FC, forwardRef } from "react";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
 import {
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Collapse,
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { configs, RouteProps } from "./router-configs";
