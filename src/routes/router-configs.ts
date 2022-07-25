@@ -9,6 +9,7 @@ import { CanvasToLego } from "@/pages/canvas-lego";
 import { CanvasMain } from "@/pages/canvas-main";
 import { CanvasToRubic, CanvasToPixel } from "@/pages/canvas-cube";
 import { CanvasColor, CanvasColorPicker } from "@/pages/canvas-color";
+import { CanvasJumpSquare } from "@/pages/canvas-jump-square";
 
 export type RouteProps = {
   path: string;
@@ -55,5 +56,11 @@ export const configs: RouteProps[] = [
     title: "相关色获取",
     Icon: StarBorder,
     Component: CanvasColorPicker,
+  },
+  {
+    path: "/fun-canvas/jump-square",
+    title: "跳跃方块",
+    Icon: StarBorder,
+    Component: CanvasJumpSquare,
   },
 ];
