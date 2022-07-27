@@ -28,8 +28,9 @@ export class Hero extends Rect implements HeroProps {
 
   update(stage: ExportedStage) {
     const { verticalAcceleration } = stage;
-    // this.prevPosition = this.position.clone();
-    // this.prevVelocity = this.velocity.clone();
+    // 暂存上一帧位置
+    this.prevPosition = this.position.clone();
+    this.prevVelocity = this.velocity.clone();
     // this.velocity.add(verticalAcceleration);
     this.position.add(
       Vector.add(this.velocity, verticalAcceleration.clone().mult(0.5))
