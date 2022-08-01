@@ -59,6 +59,12 @@ export const CanvasJumpSquare: FC = () => {
     // stage.add(hero, pm);
   };
 
+  /**
+   * 碰撞判断：在 platfrom 左侧
+   * @param hero
+   * @param platform
+   * @returns
+   */
   const isIntersectLeft = (hero: Hero, platform: Platform) => {
     if (hero.prevPosition.x + hero.width >= platform.prevPosition.x) {
       return false;
@@ -87,6 +93,7 @@ export const CanvasJumpSquare: FC = () => {
         hero.velocity = new Vector(0, 0);
         hero.curConJump = 0;
 
+        // 下一帧碰撞在 platfrom 块左侧 => 死亡 => 重启游戏
         if (isIntersectLeft(hero, platform)) {
           init();
           return;
