@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { FC, useEffect, useRef } from "react";
+import { addListener } from "./utils/game-controller";
 import { Hero } from "./utils/hero";
 import { Particle } from "./utils/particle";
 import { Platform } from "./utils/platform";
@@ -42,21 +43,32 @@ export const CanvasJumpSquare: FC = () => {
       ele: canvasRef.current,
     });
 
+    addListener(() => {
+      // hero.jump();
+      stage.play((raf: number) => {
+        collideDetect(hero, pm.platforms, raf);
+        for (const particle of particles) {
+          particle.update(stage);
+          particle.draw(stage);
+        }
+      });
+    });
+
     init();
   }, [canvasRef.current]);
 
   const init = () => {
     stage.reset();
-    stage.add(hero, pm);
-    // stage.play();
-    stage.play(() => {
-      collideDetect(hero, pm.platforms);
+    console.log("lnz init", hero.position.y, stage.height);
+
+    stage.play((raf: number) => {
+      collideDetect(hero, pm.platforms, raf);
       for (const particle of particles) {
         particle.update(stage);
         particle.draw(stage);
       }
     });
-    // stage.add(hero, pm);
+    stage.add(hero, pm);
   };
 
   /**
@@ -80,11 +92,19 @@ export const CanvasJumpSquare: FC = () => {
     return ty < tx;
   };
 
-  const collideDetect = (hero: Hero, platforms: Platform[]) => {
-    if (hero.position.y > stage.height) {
-      init();
+  const isIntersectBottom = (hero: Hero, stage: Stage) => {
+    return hero.position.y > stage.height;
+  };
+
+  const collideDetect = (hero: Hero, platforms: Platform[], raf: number) => {
+    console.log("lnz collideDetect", hero.position.y, stage.height);
+    if (isIntersectBottom(hero, stage)) {
+      // cancelAnimationFrame(raf)
+      stage.stop();
+      // init();
       return;
     }
+
     let tempHasIntersect = false;
     for (let i = 0; i < platforms.length; i++) {
       if (Rect.isIntersect(hero, platforms[i])) {
@@ -101,49 +121,49 @@ export const CanvasJumpSquare: FC = () => {
 
         hero.position.y = platform.position.y - hero.height;
 
-        const particleSize = 8;
+        // const particleSize = 8;
 
-        if (!prevHasIntersect) {
-          for (let i = 0; i < 10; i++) {
-            const left = Math.random() > 0.5;
-            particles[particleId % maxParticleLength] = new Particle({
-              velocity: left
-                ? new Vector(random(-4, -2), random(-6, -1))
-                : new Vector(random(10, 16), random(-6, -1)),
-              mass: 1,
-              position: left
-                ? new Vector(
-                    hero.position.x - particleSize,
-                    hero.position.y + hero.height - particleSize
-                  )
-                : new Vector(
-                    hero.position.x + hero.width,
-                    hero.position.y + hero.height - particleSize
-                  ),
-              width: particleSize,
-              height: particleSize,
-              color: randomOne([hero.color, platform.color]),
-            });
-            particles[particleId++ % maxParticleLength].applyForce(
-              new Vector(0, -2)
-            );
-          }
-        } else {
-          particles[particleId % maxParticleLength] = new Particle({
-            velocity: new Vector(0, random(-6, -1)),
-            mass: 1,
-            position: new Vector(
-              hero.position.x - particleSize,
-              hero.position.y + hero.height - particleSize
-            ),
-            width: particleSize,
-            height: particleSize,
-            color: platform.color,
-          });
-          particles[particleId++ % maxParticleLength].applyForce(
-            new Vector(0, -2)
-          );
-        }
+        // if (!prevHasIntersect) {
+        //   for (let i = 0; i < 10; i++) {
+        //     const left = Math.random() > 0.5;
+        //     particles[particleId % maxParticleLength] = new Particle({
+        //       velocity: left
+        //         ? new Vector(random(-4, -2), random(-6, -1))
+        //         : new Vector(random(10, 16), random(-6, -1)),
+        //       mass: 1,
+        //       position: left
+        //         ? new Vector(
+        //             hero.position.x - particleSize,
+        //             hero.position.y + hero.height - particleSize
+        //           )
+        //         : new Vector(
+        //             hero.position.x + hero.width,
+        //             hero.position.y + hero.height - particleSize
+        //           ),
+        //       width: particleSize,
+        //       height: particleSize,
+        //       color: randomOne([hero.color, platform.color]),
+        //     });
+        //     particles[particleId++ % maxParticleLength].applyForce(
+        //       new Vector(0, -2)
+        //     );
+        //   }
+        // } else {
+        //   particles[particleId % maxParticleLength] = new Particle({
+        //     velocity: new Vector(0, random(-6, -1)),
+        //     mass: 1,
+        //     position: new Vector(
+        //       hero.position.x - particleSize,
+        //       hero.position.y + hero.height - particleSize
+        //     ),
+        //     width: particleSize,
+        //     height: particleSize,
+        //     color: platform.color,
+        //   });
+        //   particles[particleId++ % maxParticleLength].applyForce(
+        //     new Vector(0, -2)
+        //   );
+        // }
       }
     }
     hasIntersect = tempHasIntersect;
@@ -157,7 +177,7 @@ export const CanvasJumpSquare: FC = () => {
   };
 
   return (
-    <div className="canvas-mosaic">
+    <div className="canvas-mosaic" style={{ width: 800, height: 600 }}>
       <canvas ref={canvasRef} id="jump-square"></canvas>
     </div>
   );

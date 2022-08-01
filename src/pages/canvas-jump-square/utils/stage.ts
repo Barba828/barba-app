@@ -1,6 +1,7 @@
 import { DrawProps } from "./rect";
 import { Vector } from "./vector";
 
+let test = -1;
 export interface ExportedStage extends DrawProps {
   width: number;
   height: number;
@@ -93,11 +94,12 @@ export class Stage implements StageProps {
    * 防模糊初始化画布
    */
   init() {
-    const { devicePixelRatio, innerWidth, innerHeight } = window;
-    this.ele.width = innerWidth * devicePixelRatio;
-    this.ele.height = innerHeight * devicePixelRatio;
-    this.width = innerWidth;
-    this.height = innerHeight;
+    const { devicePixelRatio } = window;
+    const { clientWidth, clientHeight } = this.ele.parentElement || this.ele;
+    this.ele.width = clientWidth * devicePixelRatio;
+    this.ele.height = clientHeight * devicePixelRatio;
+    this.width = clientWidth;
+    this.height = clientHeight;
     this.ele.style.width = this.width + "px";
     this.ele.style.height = this.height + "px";
     this.ctx = this.ele.getContext("2d")!;
@@ -109,17 +111,19 @@ export class Stage implements StageProps {
    */
   tick = (callback?: Function) => {
     // 下一帧动画
-    // this.raf = requestAnimationFrame(() => {
+    this.raf = requestAnimationFrame(() => {
+      this.ctx.clearRect(0, 0, this.width, this.height); // 清理画布
+      this.horizontalVelocity.add(this.horizontalAcceleration); // 更新速度
+      test = this.raf;
+      this.tick(callback);
+    });
+    test = this.raf;
+
+    // setTimeout(() => {
     //   this.ctx.clearRect(0, 0, this.width, this.height); // 清理画布
     //   this.horizontalVelocity.add(this.horizontalAcceleration); // 更新速度
     //   this.tick(callback);
-    // });
-
-    setTimeout(() => {
-      this.ctx.clearRect(0, 0, this.width, this.height); // 清理画布
-      this.horizontalVelocity.add(this.horizontalAcceleration); // 更新速度
-      this.tick(callback);
-    }, 1000);
+    // }, 1000);
     // 更新舞台属性到所有元素
     const stage = {
       width: this.width,
@@ -132,7 +136,7 @@ export class Stage implements StageProps {
       entity.update(stage);
     }
     // 重绘舞台
-    callback?.();
+    callback?.(this.raf);
     for (const entity of this.entities) {
       entity.draw(stage);
     }
@@ -150,6 +154,7 @@ export class Stage implements StageProps {
    * 停止动画
    */
   stop = () => {
+    cancelAnimationFrame(test);
     cancelAnimationFrame(this.raf);
   };
 
@@ -167,6 +172,7 @@ export class Stage implements StageProps {
    * 重置水平速度和舞台元素
    */
   reset = () => {
+    this.stop();
     this.horizontalVelocity = this.initialHorizontalVelocity.clone();
     this.entities = [];
   };
